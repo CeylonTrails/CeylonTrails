@@ -120,6 +120,19 @@ Route::middleware(['auth:host'])->group(function () {
     Route::delete('/host/items/{item}', [ItemController::class, 'destroy'])->name('host.items.destroy');
 });
 
+// Middleware for admin user
+use App\Http\Controllers\Admin\AdminController;
+
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::post('/login', [AdminController::class, 'authenticate']);
+    Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+});
+
+Route::middleware('admin')->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
 
 
 
